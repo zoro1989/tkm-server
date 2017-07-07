@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="tkm-server:war">
+    <output-path>$PROJECT_DIR$/classes/artifacts/tkm_server_war</output-path>
+    <root id="archive" name="tkm-server_war.war">
+      <element id="artifact" artifact-name="tkm-server:war exploded" />
+    </root>
+  </artifact>
+</component>

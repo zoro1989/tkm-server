@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/ParkCharge-parent.iml" filepath="$PROJECT_DIR$/ParkCharge-parent.iml" />
+      <module fileurl="file://$PROJECT_DIR$/tkm-server.iml" filepath="$PROJECT_DIR$/tkm-server.iml" />
     </modules>
   </component>
 </project>
