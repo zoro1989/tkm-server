@@ -1,9 +1,11 @@
 package com.ccbjb.controller.user;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.ccbjb.model.TKMBaseModel;
 import net.sf.json.JSONObject;
 
 import org.apache.shiro.authc.DisabledAccountException;
@@ -45,20 +47,32 @@ public class LoginController extends BaseController{
 	 * @return
 	 */
 	@RequestMapping(value="login")
-	public String login(HttpServletRequest request,ModelMap model){
-		return Const.URL_USER_LOGIN;
+	@ResponseBody
+	public TKMBaseModel login(HttpServletRequest request){
+		TKMBaseModel model = new TKMBaseModel();
+		model.setResultCode(101);
+		return model;
+	}
+
+	/**
+	 * 无权限
+	 * @return
+	 */
+	@RequestMapping(value="refuse")
+	@ResponseBody
+	public TKMBaseModel refuse(HttpServletRequest request){
+		TKMBaseModel model = new TKMBaseModel();
+		model.setResultCode(103);
+		return model;
 	}
 
 	//登陆提交地址，和applicationContext-shiro.xml中配置的loginurl一致
 	@RequestMapping(value="submitLogin",method=RequestMethod.POST)
 	@ResponseBody
-	public Map<String,Object> submitLogin(SysUser sysUser, Boolean rememberMe, HttpServletRequest request)throws Exception{
-		
+	public TKMBaseModel submitLogin(SysUser sysUser, Boolean rememberMe, HttpServletRequest request)throws Exception{
+		TKMBaseModel model = new TKMBaseModel();
 		try {
 			sysUser = TokenManager.login(sysUser.getEmail(),sysUser.getPswd(),rememberMe);
-			resultMap.put("status", 200);
-			resultMap.put("message", "登录成功");
-
 
 			/**
 			 * shiro 获取登录之前的地址
@@ -78,32 +92,26 @@ public class LoginController extends BaseController{
 			if(StringUtils.isBlank(url)){
 				url = request.getContextPath() + "/welcome/first.tkm";
 			}
+			model.setResultCode(100);
+			Map<String,String> resultMap = new HashMap<String, String>();
+			resultMap.put("resultMsg", "登录成功");
 			//跳转地址
 			resultMap.put("back_url", url);
+			model.setResultData(resultMap);
 			/**
 			 * 这里其实可以直接catch Exception，然后抛出 message即可，但是最好还是各种明细catch 好点。。
 			 */
 		} catch (DisabledAccountException e) {
-			resultMap.put("status", 500);
-			resultMap.put("message", "帐号已经禁用。");
+			model.setResultCode(500);
+			model.setErrorMessage("帐号已经禁用。");
 		} catch (Exception e) {
-			resultMap.put("status", 500);
-			resultMap.put("message", "帐号或密码错误");
+			model.setResultCode(500);
+			model.setErrorMessage("帐号或密码错误");
 		}
 
-		return resultMap;
+		return model;
 	}
 
-
-	/**
-	 * 注册跳转
-	 * @return
-	 */
-	@RequestMapping(value="register",method=RequestMethod.GET)
-	public ModelAndView register(){
-
-		return new ModelAndView("user/register");
-	}
 	/**
 	 * 注册 && 登录
 	 * @param vcode		验证码
@@ -112,27 +120,29 @@ public class LoginController extends BaseController{
 	 */
 	@RequestMapping(value="subRegister",method=RequestMethod.POST)
 	@ResponseBody
-	public Map<String,Object> subRegister(String vcode,SysUser entity){
-		resultMap.put("status", 400);
+	public TKMBaseModel subRegister(String vcode,SysUser entity){
+		TKMBaseModel model = new TKMBaseModel();
 		if(!VerifyCodeUtils.verifyCode(vcode)){
-			resultMap.put("message", "验证码不正确！");
-			return resultMap;
+			model.setResultCode(500);
+			model.setErrorMessage("验证码不正确！");
+			return model;
 		}
 		String email =  entity.getEmail();
 		String password = entity.getPswd();
 
 		SysUser user = userService.findUserByEmail(email);
 		if(null != user){
-			resultMap.put("message", "帐号|Email已经存在！");
-			return resultMap;
+			model.setResultCode(500);
+			model.setErrorMessage("帐号|Email已经存在！");
+			return model;
 		}
 
 		userService.insert(entity);
 		LoggerUtils.fmtDebug(getClass(), "注册插入完毕！", JSONObject.fromObject(entity).toString());
 		TokenManager.login(email,password, Boolean.TRUE);
 		LoggerUtils.fmtDebug(getClass(), "注册后，登录完毕！", JSONObject.fromObject(entity).toString());
-		resultMap.put("message", "注册成功！");
-		resultMap.put("status", 200);
-		return resultMap;
+		model.setResultCode(100);
+		model.setResultData("注册成功！");
+		return model;
 	}
 }

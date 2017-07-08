@@ -41,9 +41,11 @@ public class WelcomeController extends BaseController{
 
 	//登陆提交地址，和applicationContext-shiro.xml中配置的loginurl一致
 	@RequestMapping("first")
-	public String first(HttpServletRequest request, ModelMap modal)throws Exception{
-
-		return "user/first";
+	@ResponseBody
+	public TKMBaseModel first(HttpServletRequest request, ModelMap modal)throws Exception{
+		TKMBaseModel model = new TKMBaseModel();
+		model.setResultCode(102);
+		return model;
 	}
 	
 	@RequestMapping("userinfo")
@@ -54,16 +56,6 @@ public class WelcomeController extends BaseController{
 		TKMBaseModel model = new TKMBaseModel();
 		model.setResultData(token);
 		return model;
-	}
-
-	/**
-	 * 通用页面跳转
-	 * @param page
-	 * @return
-	 */
-	@RequestMapping(value="{page}",method=RequestMethod.GET)
-	public TKMModelAndView toPage(@PathVariable("page")String page){
-		return new TKMModelAndView(String.format("user/%s", page));
 	}
 
 	/**

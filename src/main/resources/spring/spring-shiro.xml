@@ -31,11 +31,17 @@
                 /images/** = anon
                 /js/** = anon
                 /css/** = anon
-                /api/** = user
+                /index.html = anon
                 <!-- 请求 logout.action地址，shiro去清除session-->
                 /user/logout.tkm = logout
-                /user/** = anon
-                /common/** = anon
+                /user/submitLogin.tkm = anon
+                /user/** = user
+                /welcome/** = user
+                /member/** = user
+                /role/** = user
+                /permission/** = user
+                /push/** = user
+                /common/** = user
                 <!--商品查询需要商品查询权限 ，取消url拦截配置，使用注解授权方式 -->
                 <!-- /items/queryItems.action = perms[item:query]
                 /items/editItems.action = perms[item:edit] -->
@@ -123,7 +129,6 @@
         <property name="passwordParam" value="password" />
         <!-- 记住我input的名称 -->
         <property name="rememberMeParam" value="rememberMe"/>
-        <property name="loginUrl" value="/user/login.tkm" />
     </bean>
 
     <!-- 会话 DAO -->
