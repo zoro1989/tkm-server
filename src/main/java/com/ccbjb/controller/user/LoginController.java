@@ -1,33 +1,27 @@
 package com.ccbjb.controller.user;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-
-import com.ccbjb.model.TKMBaseModel;
-import net.sf.json.JSONObject;
-
-import org.apache.shiro.authc.DisabledAccountException;
-import org.apache.shiro.web.util.SavedRequest;
-import org.apache.shiro.web.util.WebUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
-
-import com.ccbjb.common.division.Const;
 import com.ccbjb.common.entity.SysUser;
 import com.ccbjb.common.shiro.TokenManager;
 import com.ccbjb.common.shiro.VerifyCodeUtils;
 import com.ccbjb.common.utils.LoggerUtils;
 import com.ccbjb.common.utils.StringUtils;
 import com.ccbjb.controller.common.BaseController;
+import com.ccbjb.model.TKMBaseModel;
 import com.ccbjb.service.user.IUserService;
+import net.sf.json.JSONObject;
+import org.apache.shiro.authc.DisabledAccountException;
+import org.apache.shiro.web.util.SavedRequest;
+import org.apache.shiro.web.util.WebUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 登陆和退出
@@ -90,9 +84,9 @@ public class LoginController extends BaseController{
 			LoggerUtils.fmtDebug(getClass(), "获取登录之前的URL:[%s]",url);
 			//如果登录之前没有地址，那么就跳转到首页。
 			if(StringUtils.isBlank(url)){
-				url = request.getContextPath() + "/welcome/first.tkm";
+				url = "first";
 			}
-			model.setResultCode(100);
+			model.setResultCode(104);
 			Map<String,String> resultMap = new HashMap<String, String>();
 			resultMap.put("resultMsg", "登录成功");
 			//跳转地址
