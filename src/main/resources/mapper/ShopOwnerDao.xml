@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ccbjb.common.dao.ShopOwnerDao" >
+  <sql id="Base_Column_List" >
+    id, nickname, mobile, pswd, create_time,salt
+  </sql>
+
+  <!-- 登录 -->
+  <select id="login" resultType="ShopOwner" >
+    SELECT
+    <include refid="Base_Column_List" />
+    from shop_owner
+    where nickname = #{nickname,jdbcType=VARCHAR} and pswd = #{pswd,jdbcType=VARCHAR}
+  </select>
+</mapper>
