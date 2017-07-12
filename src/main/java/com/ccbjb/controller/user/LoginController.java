@@ -68,30 +68,9 @@ public class LoginController extends BaseController{
 		try {
 			sysUser = TokenManager.login(sysUser.getEmail(),sysUser.getPswd(),rememberMe);
 
-			/**
-			 * shiro 获取登录之前的地址
-			 * 之前0.1版本这个没判断空。
-			 */
-			SavedRequest savedRequest = WebUtils.getSavedRequest(request);
-			String url = null ;
-			if(null != savedRequest){
-				url = savedRequest.getRequestUrl();
-			}
-			/**
-			 * 我们平常用的获取上一个请求的方式，在Session不一致的情况下是获取不到的
-			 * String url = (String) request.getAttribute(WebUtils.FORWARD_REQUEST_URI_ATTRIBUTE);
-			 */
-			LoggerUtils.fmtDebug(getClass(), "获取登录之前的URL:[%s]",url);
-			//如果登录之前没有地址，那么就跳转到首页。
-			if(StringUtils.isBlank(url)){
-				url = "first";
-			}
 			model.setResultCode(104);
-			Map<String,String> resultMap = new HashMap<String, String>();
-			resultMap.put("resultMsg", "登录成功");
 			//跳转地址
-			resultMap.put("back_url", url);
-			model.setResultData(resultMap);
+			model.setResultData("登录成功");
 			/**
 			 * 这里其实可以直接catch Exception，然后抛出 message即可，但是最好还是各种明细catch 好点。。
 			 */

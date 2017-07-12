@@ -23,22 +23,23 @@ import java.util.Map;
  */
 @Controller
 @Scope(value="prototype")
-@RequestMapping("user")
+@RequestMapping("api")
 public class MobileLoginController extends BaseController {
 
     @Autowired
     MobileLoginService mobileLoginService;
 
-    @RequestMapping(value="empLogin",method= RequestMethod.POST)
+    @RequestMapping(value="mobileLogin",method= RequestMethod.POST)
     @ResponseBody
     public TKMBaseModel empLogin(ShopOwner shopOwner, HttpServletRequest request)throws Exception{
         ShopOwner user = mobileLoginService.login(shopOwner);
         TKMBaseModel model = new TKMBaseModel();
         if(user!=null){
-            model.setResultCode(100);
+            model.setResultCode(104);
             Map m = new HashMap<String,String>();
-            m.put("message","登陆成功");
+            m.put("resultMsg","登陆成功");
             m.put("tokenId",user.getTokenId());
+            model.setResultData(m);
         }else{
             model.setResultCode(500);
             model.setErrorMessage("帐号或密码错误");

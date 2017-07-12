@@ -6,6 +6,7 @@ import com.ccbjb.common.entity.ShopOwner;
 import com.ccbjb.logic.user.MobileUserManager;
 import com.ccbjb.service.mobile.MobileLoginService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -13,6 +14,7 @@ import java.util.Map;
 /**
  * Created by Administrator on 2017/7/12.
  */
+@Service
 public class MobileLoginServiceImpl implements MobileLoginService{
 
     @Autowired
@@ -22,16 +24,23 @@ public class MobileLoginServiceImpl implements MobileLoginService{
 
     public ShopOwner login(ShopOwner user) {
         Map<String,Object> map = new HashMap<String, Object>();
-        map.put("nickname", user.getNickname());
-        user = MobileUserManager.md5Pswd(user);
-        map.put("pswd", user.getPswd());
-        ShopOwner result = iShopOwnerDao.login(map);
+        String mobile = user.getMobile();
+        String password = user.getPswd();
+        ShopOwner result = iShopOwnerDao.findUserByMobile(mobile);
+        result.setPswd(password);
         if(result!=null){
-            //1：访问redis
-            //String tokenId = redisDao.getTokenId(result.getEmail());
-            String tokenId = MobileUserManager.createTokenId();
-            redisDao.putUserId(tokenId, result.getNickname());
-            result.setTokenId(tokenId);
+            map.put("mobile", mobile);
+            user = MobileUserManager.md5Pswd(result);
+            map.put("pswd", result.getPswd());
+
+            result = iShopOwnerDao.login(map);
+            if(result!=null){
+                //1：访问redis
+                //String tokenId = redisDao.getTokenId(result.getEmail());
+                String tokenId = MobileUserManager.createTokenId();
+                redisDao.putUserId(tokenId, result.getMobile());
+                result.setTokenId(tokenId);
+            }
         }
         return result;
     }

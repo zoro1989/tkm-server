@@ -19,4 +19,5 @@ import java.util.Map;
 public interface IShopOwnerDao {
 
 	ShopOwner login(Map<String, Object> map);
+	ShopOwner findUserByMobile(String mobile);
 }

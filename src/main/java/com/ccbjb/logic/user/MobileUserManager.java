@@ -12,7 +12,7 @@ public class MobileUserManager {
 	 * @return
 	 */
 	public static ShopOwner md5Pswd(ShopOwner user){
-		user.setPswd(UserManager.md5Pswd(user.getPswd(),user.getNickname()+user.getSalt()));
+		user.setPswd(UserManager.md5Pswd(user.getPswd(),user.getMobile()+user.getSalt()));
 		return user;
 	}
 	
