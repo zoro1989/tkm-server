@@ -68,7 +68,7 @@ public class LoginController extends BaseController{
 		try {
 			sysUser = TokenManager.login(sysUser.getEmail(),sysUser.getPswd(),rememberMe);
 
-			model.setResultCode(104);
+			model.setResultCode(100);
 			//跳转地址
 			model.setResultData("登录成功");
 			/**
