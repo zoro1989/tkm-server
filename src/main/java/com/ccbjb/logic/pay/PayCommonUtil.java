@@ -4,11 +4,7 @@
 package com.ccbjb.logic.pay;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
-import java.util.SortedMap;
+import java.util.*;
 
 /**
  * TODO 此处输入类或接口的概要说明
@@ -40,7 +36,7 @@ public class PayCommonUtil {
         sb.append("key=" + API_KEY);  
           
         //算出摘要  
-        String mysign = MD5Util.MD5Encode(sb.toString(), characterEncoding).toLowerCase();  
+        String mysign = MD5Util.MD5Encode(sb.toString(), characterEncoding).toLowerCase();
         String tenpaySign = ((String)packageParams.get("sign")).toLowerCase();  
           
         //System.out.println(tenpaySign + "    " + mysign);  
@@ -70,7 +66,7 @@ public class PayCommonUtil {
             }  
         }  
         sb.append("key=" + API_KEY);  
-        String sign = MD5Util.MD5Encode(sb.toString(), characterEncoding).toUpperCase();  
+        String sign = MD5Util.MD5Encode(sb.toString(), characterEncoding).toUpperCase();
         return sign;  
     }  
   

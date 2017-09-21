@@ -1,9 +1,9 @@
 package com.ccbjb.logic.user;
 
 
-import com.ccbjb.common.entity.SysPermission;
-import com.ccbjb.common.entity.SysRole;
-import com.ccbjb.common.entity.SysUser;
+import com.ccbjb.common.domain.SysPermission;
+import com.ccbjb.common.domain.SysRole;
+import com.ccbjb.common.domain.SysUser;
 import com.ccbjb.common.utils.MathUtil;
 
 import java.util.LinkedHashMap;

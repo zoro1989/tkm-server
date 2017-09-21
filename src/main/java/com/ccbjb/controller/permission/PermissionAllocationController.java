@@ -1,53 +1,45 @@
 package com.ccbjb.controller.permission;
 
-import java.util.List;
-import java.util.Map;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
-
-import com.ccbjb.common.mybatis.page.Pagination;
+import com.ccbjb.common.mybatis.Result;
+import com.ccbjb.common.mybatis.ResultGenerator;
 import com.ccbjb.controller.common.BaseController;
-import com.ccbjb.model.TKMBaseModel;
-import com.ccbjb.model.permission.RolePermissionAllocationModel;
 import com.ccbjb.model.permission.SysPermissionModel;
 import com.ccbjb.service.permission.IPermissionService;
 import com.ccbjb.service.permission.IRoleService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 用户权限分配
  */
-@Controller
+@RestController
 @Scope(value="prototype")
 @RequestMapping("permission")
 public class PermissionAllocationController extends BaseController {
 	
 	@Autowired
-	IPermissionService permissionService;
+    IPermissionService permissionService;
 	@Autowired
-	IRoleService roleService;
+    IRoleService roleService;
 	/**
 	 * 权限分配
-	 * @param modelMap
 	 * @param pageNo
 	 * @param findContent
 	 * @return
 	 */
-	@RequestMapping(value="allocation")
-	@ResponseBody
-	public TKMBaseModel allocation(ModelMap modelMap,Integer pageNo,String findContent){
-		modelMap.put("findContent", findContent);
-		Pagination<RolePermissionAllocationModel> boPage = roleService.findRoleAndPermissionPage(modelMap,pageNo,pageSize);
-		modelMap.put("page", boPage);
-		TKMBaseModel model = new TKMBaseModel();
-		model.setResultCode(100);
-		model.setResultData(boPage);
-		return model;
+	@PostMapping(value="allocation")
+	public Result allocation(String findContent, Integer pageNo){
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("findContent", findContent);
+		return roleService.findRoleAndPermissionPage(map,pageNo,pageSize);
 	}
 	
 	/**
@@ -55,14 +47,10 @@ public class PermissionAllocationController extends BaseController {
 	 * @param id
 	 * @return
 	 */
-	@RequestMapping(value="selectPermissionById")
-	@ResponseBody
-	public TKMBaseModel selectPermissionById(Long id){
-		TKMBaseModel model = new TKMBaseModel();
+	@GetMapping(value="selectPermissionById")
+	public Result selectPermissionById(Long id){
 		List<SysPermissionModel> permissionBos = permissionService.selectPermissionById(id);
-		model.setResultCode(100);
-		model.setResultData(permissionBos);
-		return model;
+		return ResultGenerator.genSuccessResult(permissionBos);
 	}
 	/**
 	 * 操作角色的权限
@@ -70,9 +58,8 @@ public class PermissionAllocationController extends BaseController {
 	 * @param ids		权限ID，以‘,’间隔
 	 * @return
 	 */
-	@RequestMapping(value="addPermission2Role")
-	@ResponseBody
-	public TKMBaseModel addPermission2Role(Long roleId,Long[] ids){
+	@PostMapping(value="addPermission2Role")
+	public Result addPermission2Role(Long roleId, Long[] ids){
 		return permissionService.addPermission2Role(roleId,ids);
 	}
 	/**
@@ -80,9 +67,8 @@ public class PermissionAllocationController extends BaseController {
 	 * @param roleIds	角色ID ，以‘,’间隔
 	 * @return
 	 */
-	@RequestMapping(value="clearPermissionByRoleIds")
-	@ResponseBody
-	public TKMBaseModel clearPermissionByRoleIds(Long[] roleIds){
+	@PostMapping(value="clearPermissionByRoleIds")
+	public Result clearPermissionByRoleIds(Long[] roleIds){
 		return permissionService.deleteByRids(roleIds);
 	}
 }

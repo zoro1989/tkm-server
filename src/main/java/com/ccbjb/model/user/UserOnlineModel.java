@@ -1,6 +1,5 @@
 package com.ccbjb.model.user;
-
-import com.ccbjb.common.entity.SysUser;
+import com.ccbjb.common.domain.SysUser;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -28,12 +27,7 @@ public class UserOnlineModel extends SysUser implements Serializable {
 	
 	public UserOnlineModel() {
 	}
-	
-	public UserOnlineModel(SysUser user) {
-		super(user);
-	}
-	
-	
+
 	public String getSessionId() {
 		return sessionId;
 	}

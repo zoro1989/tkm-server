@@ -1,6 +1,7 @@
 package com.ccbjb.model.permission;
 
-import com.ccbjb.common.entity.SysUser;
+
+import com.ccbjb.common.domain.SysUser;
 
 import java.io.Serializable;
 

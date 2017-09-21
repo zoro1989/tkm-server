@@ -1,35 +1,33 @@
 package com.ccbjb.service.permission;
 
+import com.ccbjb.common.domain.SysRole;
+import com.ccbjb.common.mybatis.Result;
+
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import com.ccbjb.common.entity.SysRole;
-import com.ccbjb.common.mybatis.page.Pagination;
-import com.ccbjb.model.TKMBaseModel;
-import com.ccbjb.model.permission.RolePermissionAllocationModel;
-
 public interface IRoleService {
 
-	int deleteByPrimaryKey(Long id);
+	void deleteByPrimaryKey(Long id);
 
-    int insert(SysRole record);
+    void insert(SysRole record);
 
-    int insertSelective(SysRole record);
+    void insertSelective(SysRole record);
 
 	SysRole selectByPrimaryKey(Long id);
 
-    int updateByPrimaryKeySelective(SysRole record);
+    void updateByPrimaryKeySelective(SysRole record);
 
-    int updateByPrimaryKey(SysRole record);
+    void updateByPrimaryKey(SysRole record);
 
-	Pagination<SysRole> findPage(Map<String, Object> resultMap, Integer pageNo,
-								 Integer pageSize);
+	Result findPage(Map<String, String> resultMap, Integer pageNo,
+                    Integer pageSize);
 
-	TKMBaseModel deleteRoleById(Long[] ids);
+	Result deleteRoleById(Long[] ids);
 
-	Pagination<RolePermissionAllocationModel> findRoleAndPermissionPage(
-            Map<String, Object> resultMap, Integer pageNo, Integer pageSize);
+	Result findRoleAndPermissionPage(
+            Map<String, String> resultMap, Integer pageNo, Integer pageSize);
 	//根据用户ID查询角色（role），放入到Authorization里。
 	Set<String> findRoleByUserId(Long userId);
 

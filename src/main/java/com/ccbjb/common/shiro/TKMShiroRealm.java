@@ -1,15 +1,11 @@
 package com.ccbjb.common.shiro;
 
-import java.util.Date;
-import java.util.Set;
-
+import com.ccbjb.common.domain.SysUser;
+import com.ccbjb.service.permission.IPermissionService;
+import com.ccbjb.service.permission.IRoleService;
+import com.ccbjb.service.user.IUserService;
 import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.AccountException;
-import org.apache.shiro.authc.AuthenticationException;
-import org.apache.shiro.authc.AuthenticationInfo;
-import org.apache.shiro.authc.AuthenticationToken;
-import org.apache.shiro.authc.DisabledAccountException;
-import org.apache.shiro.authc.SimpleAuthenticationInfo;
+import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
@@ -18,10 +14,8 @@ import org.apache.shiro.subject.SimplePrincipalCollection;
 import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.ccbjb.common.entity.SysUser;
-import com.ccbjb.service.permission.IPermissionService;
-import com.ccbjb.service.permission.IRoleService;
-import com.ccbjb.service.user.IUserService;
+import java.util.Date;
+import java.util.Set;
 
 /**
  * Created by Administrator on 2017/3/16.
@@ -29,11 +23,11 @@ import com.ccbjb.service.user.IUserService;
 public class TKMShiroRealm extends AuthorizingRealm {
 
 	@Autowired
-	IUserService userService;
+    IUserService userService;
 	@Autowired
-	IPermissionService permissionService;
+    IPermissionService permissionService;
 	@Autowired
-	IRoleService roleService;
+    IRoleService roleService;
 
 	// 设置realm的名称
 	@Override

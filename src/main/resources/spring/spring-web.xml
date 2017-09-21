@@ -49,7 +49,10 @@
           class="org.springframework.web.multipart.commons.CommonsMultipartResolver" p:defaultEncoding="utf-8">
         <property name="maxUploadSize" value="50048000" />
     </bean>
-    
+    <!-- 跨域 -->
+    <mvc:cors>
+        <mvc:mapping path="/**" allowed-origins="*" allow-credentials="true" max-age="1800" allowed-methods="GET,POST,OPTIONS"/>
+    </mvc:cors>
     <!-- 定义统一异常处理器 -->
 	<bean class="com.ccbjb.common.exception.TKMExceptionResolver"></bean>
 </beans>

@@ -1,6 +1,6 @@
 package com.ccbjb.model.permission;
 
-import com.ccbjb.common.entity.SysRole;
+import com.ccbjb.common.domain.SysRole;
 import com.ccbjb.common.utils.StringUtils;
 
 import java.io.Serializable;

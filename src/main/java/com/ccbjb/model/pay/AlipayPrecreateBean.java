@@ -3,8 +3,6 @@
  */
 package com.ccbjb.model.pay;
 
-import com.ccbjb.model.TKMBaseModel;
-
 /**
  * TODO 此处输入类或接口的概要说明
  * <p>
@@ -13,7 +11,7 @@ import com.ccbjb.model.TKMBaseModel;
  * @since 1.0
  * @author CJB-国内开发组
  */
-public class AlipayPrecreateBean extends TKMBaseModel{
+public class AlipayPrecreateBean {
 	
 	private String qrCode;
 

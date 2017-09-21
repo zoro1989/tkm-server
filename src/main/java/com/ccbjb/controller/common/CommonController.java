@@ -1,41 +1,36 @@
 package com.ccbjb.controller.common;
-import java.util.Map;
+
+import com.ccbjb.common.mybatis.Result;
+import com.ccbjb.common.mybatis.ResultGenerator;
+import com.ccbjb.common.shiro.TokenManager;
+import com.ccbjb.common.shiro.VerifyCodeUtils;
+import com.ccbjb.common.utils.LoggerUtils;
+import com.ccbjb.common.utils.vcode.Captcha;
+import com.ccbjb.common.utils.vcode.GifCaptcha;
+import com.ccbjb.common.utils.vcode.SpecCaptcha;
+import com.ccbjb.service.permission.IRoleService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.util.UrlPathHelper;
-
-import com.ccbjb.common.shiro.TokenManager;
-import com.ccbjb.common.shiro.VerifyCodeUtils;
-import com.ccbjb.common.utils.LoggerUtils;
-import com.ccbjb.common.utils.StringUtils;
-import com.ccbjb.common.utils.vcode.Captcha;
-import com.ccbjb.common.utils.vcode.GifCaptcha;
-import com.ccbjb.common.utils.vcode.SpecCaptcha;
-import com.ccbjb.service.permission.IRoleService;
-
-@Controller
+@RestController
 @Scope(value="prototype")
 @RequestMapping("common")
-public class CommonController extends BaseController {
+public class CommonController extends BaseController{
 	@Autowired
-	IRoleService roleService;
+    IRoleService roleService;
 	@RequestMapping("refreshDB")
-	@ResponseBody
-	public Map<String,Object> refreshDB(){
+	public Result refreshDB(){
 		roleService.initData();
-		resultMap.put("status", 200);
-		return resultMap;
+		return ResultGenerator.genSuccessResult("初始化角色");
 	}
 	/**
 	 * 404错误
@@ -86,7 +81,7 @@ public class CommonController extends BaseController {
 	 * 获取验证码
 	 * @param response
 	 */
-	@RequestMapping(value="getVCode",method=RequestMethod.GET)
+	@RequestMapping(value="getVCode",method= RequestMethod.GET)
 	public void getVCode(HttpServletResponse response, HttpServletRequest request){
 		try {
 			response.setHeader("Pragma", "No-cache");  
@@ -100,7 +95,7 @@ public class CommonController extends BaseController {
 	        TokenManager.setVal2Session(VerifyCodeUtils.V_CODE, verifyCode.toLowerCase());
 	        //生成图片  
 	        int w = 146, h = 33;  
-	        VerifyCodeUtils.outputImage(w, h, response.getOutputStream(), verifyCode); 
+	        VerifyCodeUtils.outputImage(w, h, response.getOutputStream(), verifyCode);
 		} catch (Exception e) {
 			LoggerUtils.fmtError(getClass(),e, "获取验证码异常：%s",e.getMessage());
 		}
@@ -110,7 +105,7 @@ public class CommonController extends BaseController {
 	 * 获取验证码（Gif版本）
 	 * @param response
 	 */
-	@RequestMapping(value="getGifCode",method=RequestMethod.GET)
+	@RequestMapping(value="getGifCode",method= RequestMethod.GET)
 	public void getGifCode(HttpServletResponse response, HttpServletRequest request){
 		try {
 			response.setHeader("Pragma", "No-cache");  
@@ -128,7 +123,7 @@ public class CommonController extends BaseController {
 	        out.flush();
 	       //存入Shiro会话session  
 	        System.out.println( captcha.text().toLowerCase());
-	        TokenManager.setVal2Session(VerifyCodeUtils.V_CODE, captcha.text().toLowerCase());  
+	        TokenManager.setVal2Session(VerifyCodeUtils.V_CODE, captcha.text().toLowerCase());
 		} catch (Exception e) {
 			LoggerUtils.fmtError(getClass(),e, "获取验证码异常：%s",e.getMessage());
 		}
@@ -137,7 +132,7 @@ public class CommonController extends BaseController {
 	 * 获取验证码（jpg版本）
 	 * @param response
 	 */
-	@RequestMapping(value="getJPGCode",method=RequestMethod.GET)
+	@RequestMapping(value="getJPGCode",method= RequestMethod.GET)
 	public void getJPGCode(HttpServletResponse response, HttpServletRequest request){
 		try {
 			response.setHeader("Pragma", "No-cache");  
@@ -158,38 +153,5 @@ public class CommonController extends BaseController {
 			LoggerUtils.fmtError(getClass(),e, "获取验证码异常：%s",e.getMessage());
 		}
 	}
-	/**
-	 * 跳转到其他网站
-	 * @param url
-	 * @return
-	 */
-	@RequestMapping(value="www/common/goto",method=RequestMethod.GET)
-	public ModelAndView _goto(String url){
-		
-		return new ModelAndView("www/go_to","url",url);
-	}
-	/**
-	 * 踢出页面
-	 * @return
-	 */
-	@RequestMapping(value="kickedOut",method=RequestMethod.GET)
-	public ModelAndView kickedOut(HttpServletRequest request, UrlPathHelper pp){
-		//如果来源是null，那么就重定向到首页。这个时候，如果首页是要登录，那就会跳转到登录页
-		if(StringUtils.isBlank(request.getHeader("Referer"))){
-			return redirect("/");
-		}
-		return new ModelAndView("common/kicked_out");
-	}
-	/**
-	 * 没有权限提示页面
-	 * @return
-	 */
-	@RequestMapping(value="unauthorized",method=RequestMethod.GET)
-	public ModelAndView unauthorized(){
-		return new ModelAndView("common/unauthorized");
-	}
-	@RequestMapping(value="shiro",method=RequestMethod.GET)
-	public ModelAndView shiro(){
-		return new ModelAndView("shiro");
-	}
+
 }

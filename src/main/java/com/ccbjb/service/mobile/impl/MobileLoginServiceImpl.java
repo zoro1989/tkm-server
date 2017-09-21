@@ -1,8 +1,8 @@
 package com.ccbjb.service.mobile.impl;
 
-import com.ccbjb.common.dao.IShopOwnerDao;
-import com.ccbjb.common.dao.cache.RedisDao;
-import com.ccbjb.common.entity.ShopOwner;
+import com.ccbjb.common.domain.ShopOwner;
+import com.ccbjb.dao.ShopOwnerDao;
+import com.ccbjb.dao.cache.RedisDao;
 import com.ccbjb.logic.user.MobileUserManager;
 import com.ccbjb.service.mobile.MobileLoginService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +18,7 @@ import java.util.Map;
 public class MobileLoginServiceImpl implements MobileLoginService{
 
     @Autowired
-    IShopOwnerDao iShopOwnerDao;
+    ShopOwnerDao iShopOwnerDao;
     @Autowired
     private RedisDao redisDao;
 

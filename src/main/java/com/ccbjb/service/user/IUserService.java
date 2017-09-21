@@ -1,21 +1,17 @@
 package com.ccbjb.service.user;
 
+import com.ccbjb.common.domain.SysUser;
+import com.ccbjb.common.mybatis.Result;
+import com.ccbjb.model.permission.SysRoleModel;
+
 import java.util.List;
 import java.util.Map;
-
-import org.springframework.ui.ModelMap;
-
-import com.ccbjb.common.entity.SysUser;
-import com.ccbjb.common.mybatis.page.Pagination;
-import com.ccbjb.model.TKMBaseModel;
-import com.ccbjb.model.permission.SysRoleModel;
-import com.ccbjb.model.permission.UserRoleAllocationModel;
 
 /**
  * Created by zhulin on 2017/3/18.
  */
 public interface IUserService {
-    int deleteByPrimaryKey(Long id);
+    void deleteByPrimaryKey(Long id);
 
     SysUser insert(SysUser record);
 
@@ -23,27 +19,26 @@ public interface IUserService {
 
     SysUser selectByPrimaryKey(Long id);
 
-    int updateByPrimaryKeySelective(SysUser record);
+    void updateByPrimaryKeySelective(SysUser record);
 
-    int updateByPrimaryKey(SysUser record);
+    void updateByPrimaryKey(SysUser record);
 
     SysUser login(SysUser record);
 
     SysUser findUserByEmail(String email);
 
-    Pagination<SysUser> findByPage(Map<String, Object> resultMap, Integer pageNo,
-                                     Integer pageSize);
+    Result findByPage(Map<String, String> resultMap, Integer pageNo,
+                      Integer pageSize);
 
-    TKMBaseModel deleteUserById(Long[] ids);
+    Result deleteUserById(Long[] ids);
 
-    Map<String, Object> updateForbidUserById(Long id, Long status);
+    Result updateForbidUserById(Long id, Long status);
 
-    Pagination<UserRoleAllocationModel> findUserAndRole(ModelMap modelMap,
-                                                        Integer pageNo, Integer pageSize);
+    Result findUserAndRole(Map<String, String> map, Integer pageNo, Integer pageSize);
 
     List<SysRoleModel> selectRoleByUserId(Long id);
 
-    TKMBaseModel addRole2User(Long userId, Long[] ids);
+    Result addRole2User(Long userId, Long[] ids);
 
-    TKMBaseModel deleteRoleByUserIds(Long[] userIds);
+    Result deleteRoleByUserIds(Long[] userIds);
 }

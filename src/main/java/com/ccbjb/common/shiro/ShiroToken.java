@@ -8,7 +8,7 @@ import org.apache.shiro.authc.UsernamePasswordToken;
  * @since 1.0
  * @author CJB-国内开发组
  */
-public class ShiroToken extends UsernamePasswordToken  implements java.io.Serializable{
+public class ShiroToken extends UsernamePasswordToken implements java.io.Serializable{
 	
 	private static final long serialVersionUID = -6451794657814516274L;
 

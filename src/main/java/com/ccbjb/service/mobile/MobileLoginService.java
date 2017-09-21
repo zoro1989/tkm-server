@@ -1,6 +1,7 @@
 package com.ccbjb.service.mobile;
 
-import com.ccbjb.common.entity.ShopOwner;
+
+import com.ccbjb.common.domain.ShopOwner;
 
 /**
  * Created by Administrator on 2017/7/12.

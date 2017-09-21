@@ -1,10 +1,8 @@
 package com.ccbjb.common.shiro;
 
+import com.ccbjb.common.domain.SysUser;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.session.Session;
-
-import com.ccbjb.common.entity.SysUser;
-import com.ccbjb.common.utils.SpringContextUtil;
 
 
 /**
@@ -15,13 +13,13 @@ import com.ccbjb.common.utils.SpringContextUtil;
  */
 public class TokenManager {
 	//用户登录管理
-	public static final TKMShiroRealm realm = SpringContextUtil.getBean("tKMShiroRealm",TKMShiroRealm.class);
+	//public static final TKMShiroRealm realm = SpringContextUtil.getBean("tKMShiroRealm",TKMShiroRealm.class);
 	/**
 	 * 获取当前登录的用户User对象
 	 * @return
 	 */
 	public static SysUser getToken(){
-		SysUser token = (SysUser)SecurityUtils.getSubject().getPrincipal();
+		SysUser token = (SysUser) SecurityUtils.getSubject().getPrincipal();
 		return token ;
 	}
 	
@@ -82,7 +80,7 @@ public class TokenManager {
 	 * @param rememberMe
 	 * @return
 	 */
-	public static SysUser login(String username,String password,Boolean rememberMe){
+	public static SysUser login(String username, String password, Boolean rememberMe){
 		ShiroToken token = new ShiroToken(username, password);
 		token.setRememberMe(rememberMe);
 		SecurityUtils.getSubject().login(token);
@@ -124,7 +122,7 @@ public class TokenManager {
 		/**
 		 * 方法二、通过ApplicationContext 从Spring容器里获取实列化对象。
 		 */
-		realm.clearCachedAuthorizationInfo();
+		//realm.clearCachedAuthorizationInfo();
 		/**
 		 * 当然还有很多直接或者间接的方法，此处不纠结。
 		 */

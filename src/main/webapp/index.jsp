@@ -1,3 +1,3 @@
 <script>
-    window.location.href = '/index.html#login'
+    window.location.href = '/index.html#/'
 </script>

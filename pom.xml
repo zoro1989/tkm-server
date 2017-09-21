@@ -43,21 +43,33 @@
     </dependency>
     <!-- 数据库连接池 -->
     <dependency>
-      <groupId>c3p0</groupId>
-      <artifactId>c3p0</artifactId>
-      <version>0.9.1.2</version>
+      <groupId>com.alibaba</groupId>
+      <artifactId>druid</artifactId>
+      <version>1.0.11</version>
     </dependency>
     <!-- DAO框架依赖 -->
     <dependency>
       <groupId>org.mybatis</groupId>
       <artifactId>mybatis</artifactId>
-      <version>3.1.0</version>
+      <version>3.3.1</version>
     </dependency>
     <!-- mybatis自身实现整合spring依赖 -->
     <dependency>
       <groupId>org.mybatis</groupId>
       <artifactId>mybatis-spring</artifactId>
-      <version>1.1.1</version>
+      <version>1.2.4</version>
+    </dependency>
+    <!--分页插件-->
+    <dependency>
+      <groupId>com.github.pagehelper</groupId>
+      <artifactId>pagehelper</artifactId>
+      <version>5.1.2</version>
+    </dependency>
+    <!-- Mybatis通用mapper -->
+    <dependency>
+      <groupId>tk.mybatis</groupId>
+      <artifactId>mapper</artifactId>
+      <version>3.3.6</version>
     </dependency>
     <!-- 3.Servlet web 相关依赖 -->
     <dependency>
@@ -86,50 +98,50 @@
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-core</artifactId>
-      <version>4.2.5.RELEASE</version>
+      <version>4.3.10.RELEASE</version>
     </dependency>
     <!-- Spring ioc -->
     <!--<dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-beans</artifactId>
-      <version>4.1.7.RELEASE</version>
+      <version>4.3.10.RELEASE</version>
     </dependency>-->
     <!-- Spring 包扫码 -->
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-context</artifactId>
-      <version>4.2.5.RELEASE</version>
+      <version>4.3.10.RELEASE</version>
     </dependency>
     <!-- 2)Spring DAO层依赖 -->
     <!-- 数据库管理器 -->
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-jdbc</artifactId>
-      <version>4.2.5.RELEASE</version>
+      <version>4.3.10.RELEASE</version>
     </dependency>
     <!-- spring事务惯例 -->
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-tx</artifactId>
-      <version>4.2.5.RELEASE</version>
+      <version>4.3.10.RELEASE</version>
     </dependency>
     <!-- 3)Spring web相关依赖 -->
     <!-- 支持web项目加载spring相关功能 -->
     <!--<dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-web</artifactId>
-      <version>4.2.5.RELEASE</version>
+      <version>4.3.10.RELEASE</version>
     </dependency>-->
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-webmvc</artifactId>
-      <version>4.2.5.RELEASE</version>
+      <version>4.3.10.RELEASE</version>
     </dependency>
     <!-- 4)Spring test相关依赖 -->
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-test</artifactId>
-      <version>4.2.5.RELEASE</version>
+      <version>4.3.10.RELEASE</version>
     </dependency>
     <!-- 5)shiro相关依赖 -->
     <dependency>
@@ -225,5 +237,28 @@
 	    <artifactId>joda-time</artifactId>
 	    <version>2.9.7</version>
 	</dependency>
+    <!--阿里 FastJson依赖-->
+    <dependency>
+      <groupId>com.alibaba</groupId>
+      <artifactId>fastjson</artifactId>
+      <version>1.2.22</version>
+    </dependency>
+    <!--常用库依赖-->
+    <dependency>
+      <groupId>commons-codec</groupId>
+      <artifactId>commons-codec</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-lang3</artifactId>
+      <version>3.5</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.google.guava</groupId>
+      <artifactId>guava</artifactId>
+      <version>22.0</version>
+    </dependency>
   </dependencies>
 </project>

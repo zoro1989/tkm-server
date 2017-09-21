@@ -1,7 +1,7 @@
 package com.ccbjb.logic.user;
 
 
-import com.ccbjb.common.entity.ShopOwner;
+import com.ccbjb.common.domain.ShopOwner;
 import org.apache.shiro.crypto.SecureRandomNumberGenerator;
 
 public class MobileUserManager {

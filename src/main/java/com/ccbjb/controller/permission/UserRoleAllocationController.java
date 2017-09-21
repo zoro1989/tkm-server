@@ -1,52 +1,44 @@
 package com.ccbjb.controller.permission;
 
-import java.util.List;
-import java.util.Map;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
-
-import com.ccbjb.common.mybatis.page.Pagination;
+import com.ccbjb.common.mybatis.Result;
+import com.ccbjb.common.mybatis.ResultGenerator;
 import com.ccbjb.controller.common.BaseController;
-import com.ccbjb.model.TKMBaseModel;
 import com.ccbjb.model.permission.SysRoleModel;
-import com.ccbjb.model.permission.UserRoleAllocationModel;
 import com.ccbjb.service.permission.IPermissionService;
 import com.ccbjb.service.user.IUserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 用户角色分配
  */
-@Controller
+@RestController
 @Scope(value="prototype")
 @RequestMapping("role")
 public class UserRoleAllocationController extends BaseController {
 	@Autowired
-	IUserService userService;
+    IUserService userService;
 	@Autowired
-	IPermissionService permissionService;
+    IPermissionService permissionService;
 	/**
 	 * 用户角色权限分配
-	 * @param modelMap
 	 * @param pageNo
 	 * @param findContent
 	 * @return
 	 */
-	@RequestMapping(value="allocation",method=RequestMethod.POST)
-	@ResponseBody
-	public TKMBaseModel allocation(ModelMap modelMap,Integer pageNo,String findContent){
-		modelMap.put("findContent", findContent);
-		Pagination<UserRoleAllocationModel> boPage = userService.findUserAndRole(modelMap,pageNo,pageSize);
-		TKMBaseModel model = new TKMBaseModel();
-		model.setResultCode(100);
-		model.setResultData(boPage);
-		return model;
+	@PostMapping(value="allocation")
+	public Result allocation(String findContent, Integer pageNo){
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("findContent", findContent);
+		return userService.findUserAndRole(map,pageNo,pageSize);
 	}
 	
 	/**
@@ -54,14 +46,10 @@ public class UserRoleAllocationController extends BaseController {
 	 * @param id
 	 * @return
 	 */
-	@RequestMapping(value="selectRoleByUserId")
-	@ResponseBody
-	public TKMBaseModel selectRoleByUserId(Long id){
+	@GetMapping(value="selectRoleByUserId")
+	public Result selectRoleByUserId(Long id){
 		List<SysRoleModel> bos = userService.selectRoleByUserId(id);
-		TKMBaseModel model = new TKMBaseModel();
-		model.setResultCode(100);
-		model.setResultData(bos);
-		return model;
+		return ResultGenerator.genSuccessResult(bos);
 	}
 	/**
 	 * 操作用户的角色
@@ -69,9 +57,8 @@ public class UserRoleAllocationController extends BaseController {
 	 * @param ids		角色ID，以‘,’间隔
 	 * @return
 	 */
-	@RequestMapping(value="addRole2User",method=RequestMethod.POST)
-	@ResponseBody
-	public TKMBaseModel addRole2User(Long userId,Long[] ids){
+	@PostMapping(value="addRole2User")
+	public Result addRole2User(Long userId, Long[] ids){
 		return userService.addRole2User(userId,ids);
 	}
 	/**
@@ -79,9 +66,8 @@ public class UserRoleAllocationController extends BaseController {
 	 * @param userIds	用户ID ，以‘,’间隔
 	 * @return
 	 */
-	@RequestMapping(value="clearRoleByUserIds")
-	@ResponseBody
-	public TKMBaseModel clearRoleByUserIds(Long[] userIds){
+	@PostMapping(value="clearRoleByUserIds")
+	public Result clearRoleByUserIds(Long[] userIds){
 		return userService.deleteRoleByUserIds(userIds);
 	}
 }

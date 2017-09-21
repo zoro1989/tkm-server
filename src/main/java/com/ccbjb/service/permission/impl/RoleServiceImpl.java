@@ -1,81 +1,86 @@
 package com.ccbjb.service.permission.impl;
+
+import com.ccbjb.common.domain.SysRole;
+import com.ccbjb.common.mybatis.Result;
+import com.ccbjb.common.mybatis.ResultGenerator;
+import com.ccbjb.common.shiro.TokenManager;
+import com.ccbjb.common.utils.LoggerUtils;
+import com.ccbjb.dao.SysRoleDao;
+import com.ccbjb.dao.SysRolePermissionDao;
+import com.ccbjb.dao.SysUserDao;
+import com.ccbjb.service.permission.IRoleService;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import com.ccbjb.common.dao.ISysRoleDao;
-import com.ccbjb.common.dao.ISysRolePermissionDao;
-import com.ccbjb.common.dao.ISysUserDao;
-import com.ccbjb.common.entity.SysRole;
-import com.ccbjb.common.mybatis.BaseMybatisService;
-import com.ccbjb.common.mybatis.page.Pagination;
-import com.ccbjb.common.shiro.TokenManager;
-import com.ccbjb.common.utils.LoggerUtils;
-import com.ccbjb.model.TKMBaseModel;
-import com.ccbjb.model.permission.RolePermissionAllocationModel;
-import com.ccbjb.service.permission.IRoleService;
-
 @Service
 @SuppressWarnings("unchecked")
-public class RoleServiceImpl extends BaseMybatisService<ISysRoleDao> implements IRoleService {
+public class RoleServiceImpl implements IRoleService {
 
 	@Autowired
-	ISysRoleDao roleMapper;
+	private SysRoleDao roleDao;
 	@Autowired
-	ISysUserDao userMapper;
+	private SysUserDao userDao;
 	@Autowired
-	ISysRolePermissionDao rolePermissionMapper;
+	private SysRolePermissionDao rolePermissionDao;
 
 	@Transactional
-	public int deleteByPrimaryKey(Long id) {
-		return roleMapper.deleteByPrimaryKey(id);
+	public void deleteByPrimaryKey(Long id) {
+		roleDao.deleteById(id);
 	}
 
 	@Transactional
-	public int insert(SysRole record) {
-		return roleMapper.insert(record);
+	public void insert(SysRole record) {
+		roleDao.save(record);
 	}
 
 	@Transactional
-	public int insertSelective(SysRole record) {
-		return roleMapper.insertSelective(record);
+	public void insertSelective(SysRole record) {
+		roleDao.save(record);
 	}
 
 	public SysRole selectByPrimaryKey(Long id) {
-		return roleMapper.selectByPrimaryKey(id);
+		return roleDao.findById(id);
 	}
 
 	@Transactional
-	public int updateByPrimaryKey(SysRole record) {
-		return roleMapper.updateByPrimaryKey(record);
+	public void updateByPrimaryKey(SysRole record) {
+		roleDao.update(record);
 	}
 
 	@Transactional
-	public int updateByPrimaryKeySelective(SysRole record) {
-		return roleMapper.updateByPrimaryKeySelective(record);
-	}
-
-	@Override
-	@Transactional
-	public Pagination<SysRole> findPage(Map<String, Object> resultMap,
-										Integer pageNo, Integer pageSize) {
-		return super.findPage(resultMap, pageNo, pageSize);
+	public void updateByPrimaryKeySelective(SysRole record) {
+		roleDao.update(record);
 	}
 
 	@Transactional
-	public Pagination<RolePermissionAllocationModel> findRoleAndPermissionPage(
-			Map<String, Object> resultMap, Integer pageNo, Integer pageSize) {
-		return super.findPage("findRoleAndPermission", "findCount", resultMap, pageNo, pageSize);
+	public Result findPage(Map<String, String> resultMap,
+                           Integer pageNo, Integer pageSize) {
+		PageHelper.startPage(pageNo, pageSize);
+		List<SysRole> list = roleDao.findAllRoles(resultMap);
+		PageInfo pageInfo = new PageInfo(list);
+		return ResultGenerator.genSuccessResult(pageInfo);
 	}
 
 	@Transactional
-	public TKMBaseModel deleteRoleById(Long[] ids) {
-		TKMBaseModel model = new TKMBaseModel();
+	public Result findRoleAndPermissionPage(
+			Map<String, String> resultMap, Integer pageNo, Integer pageSize) {
+		PageHelper.startPage(pageNo, pageSize);
+		List<SysRole> list = roleDao.findRoleAndPermission();
+		PageInfo pageInfo = new PageInfo(list);
+		return ResultGenerator.genSuccessResult(pageInfo);
+	}
+
+	@Transactional
+	public Result deleteRoleById(Long[] ids) {
+		Result result = null;
 		try {
 			int count=0;
 			String resultMsg = "";
@@ -85,34 +90,34 @@ public class RoleServiceImpl extends BaseMybatisService<ISysRoleDao> implements 
 					resultMsg = "操作成功，But'系统管理员不能删除。";
 					continue c;
 				}else{
-					count+=this.deleteByPrimaryKey(id);
+					this.deleteByPrimaryKey(id);
+					count++;
 				}
 			}
 			resultMsg = "成功删除"+count+"个角色！";
-			model.setResultCode(100);
-			model.setResultData(resultMsg);
+			result = ResultGenerator.genSuccessResult(resultMsg);
 		} catch (Exception e) {
 			LoggerUtils.fmtError(getClass(), e, "根据IDS删除用户出现错误，ids[%s]", ids);
-			model.setResultCode(500);
-			model.setErrorMessage("删除出现错误，请刷新后再试！");
+			result = ResultGenerator.genFailResult();
 		}
-		return model;
+		return result;
 	}
 
 	public Set<String> findRoleByUserId(Long userId) {
-		return roleMapper.findRoleByUserId(userId);
+		return roleDao.findRoleByUserId(userId);
 	}
 
 	public List<SysRole> findNowAllPermission() {
 		Map<String,Object> map = new HashMap<String,Object>();
 		map.put("userId", TokenManager.getUserId());
-		return roleMapper.findNowAllPermission(map);
+//		map.put("userId", 11);
+		return roleDao.findNowAllPermission(map);
 	}
 	/**
 	 * 每20分钟执行一次
 	 */
 	public void initData() {
-		roleMapper.initData();
+		roleDao.initData();
 	}
 	
 }

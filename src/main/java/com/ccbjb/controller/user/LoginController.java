@@ -1,27 +1,22 @@
 package com.ccbjb.controller.user;
 
-import com.ccbjb.common.entity.SysUser;
+import com.ccbjb.common.domain.SysUser;
+import com.ccbjb.common.mybatis.Result;
+import com.ccbjb.common.mybatis.ResultCode;
+import com.ccbjb.common.mybatis.ResultGenerator;
 import com.ccbjb.common.shiro.TokenManager;
 import com.ccbjb.common.shiro.VerifyCodeUtils;
 import com.ccbjb.common.utils.LoggerUtils;
-import com.ccbjb.common.utils.StringUtils;
 import com.ccbjb.controller.common.BaseController;
-import com.ccbjb.model.TKMBaseModel;
 import com.ccbjb.service.user.IUserService;
-import net.sf.json.JSONObject;
 import org.apache.shiro.authc.DisabledAccountException;
-import org.apache.shiro.web.util.SavedRequest;
-import org.apache.shiro.web.util.WebUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * 登陆和退出
@@ -29,23 +24,20 @@ import java.util.Map;
  * @since 1.0
  * @author CJB-国内开发组
  */
-@Controller
+@RestController
 @Scope(value="prototype")
 @RequestMapping("user")
 public class LoginController extends BaseController{
 
 	@Autowired
-	IUserService userService;
+    IUserService userService;
 	/**
 	 * 登录跳转
 	 * @return
 	 */
 	@RequestMapping(value="login")
-	@ResponseBody
-	public TKMBaseModel login(HttpServletRequest request){
-		TKMBaseModel model = new TKMBaseModel();
-		model.setResultCode(101);
-		return model;
+	public Result login(HttpServletRequest request){
+		return ResultGenerator.genFailResult(ResultCode.RE_LOGIN);
 	}
 
 	/**
@@ -53,36 +45,29 @@ public class LoginController extends BaseController{
 	 * @return
 	 */
 	@RequestMapping(value="refuse")
-	@ResponseBody
-	public TKMBaseModel refuse(HttpServletRequest request){
-		TKMBaseModel model = new TKMBaseModel();
-		model.setResultCode(103);
-		return model;
+	public Result refuse(HttpServletRequest request){
+		return ResultGenerator.genFailResult(ResultCode.RE_LOGIN);
 	}
 
 	//登陆提交地址，和applicationContext-shiro.xml中配置的loginurl一致
-	@RequestMapping(value="submitLogin",method=RequestMethod.POST)
-	@ResponseBody
-	public TKMBaseModel submitLogin(SysUser sysUser, Boolean rememberMe, HttpServletRequest request)throws Exception{
-		TKMBaseModel model = new TKMBaseModel();
+	@PostMapping(value="submitLogin")
+	public Result submitLogin(SysUser sysUser, Boolean rememberMe, HttpServletRequest request)throws Exception{
+		Result result = null;
 		try {
 			sysUser = TokenManager.login(sysUser.getEmail(),sysUser.getPswd(),rememberMe);
 
-			model.setResultCode(100);
 			//跳转地址
-			model.setResultData("登录成功");
+			result = ResultGenerator.genSuccessResult("登录成功");
 			/**
 			 * 这里其实可以直接catch Exception，然后抛出 message即可，但是最好还是各种明细catch 好点。。
 			 */
 		} catch (DisabledAccountException e) {
-			model.setResultCode(500);
-			model.setErrorMessage("帐号已经禁用。");
+			result = ResultGenerator.genFailResult(ResultCode.ERR_108);
 		} catch (Exception e) {
-			model.setResultCode(500);
-			model.setErrorMessage("帐号或密码错误");
+			result = ResultGenerator.genFailResult(ResultCode.ERR_105);
 		}
 
-		return model;
+		return result;
 	}
 
 	/**
@@ -91,31 +76,27 @@ public class LoginController extends BaseController{
 	 * @param entity	SysUser实体
 	 * @return
 	 */
-	@RequestMapping(value="subRegister",method=RequestMethod.POST)
-	@ResponseBody
-	public TKMBaseModel subRegister(String vcode,SysUser entity){
-		TKMBaseModel model = new TKMBaseModel();
+	@PostMapping(value="subRegister")
+	public Result subRegister(String vcode, SysUser entity){
+		Result result = null;
 		if(!VerifyCodeUtils.verifyCode(vcode)){
-			model.setResultCode(500);
-			model.setErrorMessage("验证码不正确！");
-			return model;
+			result = ResultGenerator.genFailResult(ResultCode.ERR_109);
+			return result;
 		}
 		String email =  entity.getEmail();
 		String password = entity.getPswd();
 
 		SysUser user = userService.findUserByEmail(email);
 		if(null != user){
-			model.setResultCode(500);
-			model.setErrorMessage("帐号|Email已经存在！");
-			return model;
+			result = ResultGenerator.genFailResult(ResultCode.ERR_110);
+			return result;
 		}
 
 		userService.insert(entity);
-		LoggerUtils.fmtDebug(getClass(), "注册插入完毕！", JSONObject.fromObject(entity).toString());
+		LoggerUtils.fmtDebug(getClass(), "注册插入完毕！");
 		TokenManager.login(email,password, Boolean.TRUE);
-		LoggerUtils.fmtDebug(getClass(), "注册后，登录完毕！", JSONObject.fromObject(entity).toString());
-		model.setResultCode(100);
-		model.setResultData("注册成功！");
-		return model;
+		LoggerUtils.fmtDebug(getClass(), "注册后，登录完毕！");
+		result = ResultGenerator.genSuccessResult("注册成功！");
+		return result;
 	}
 }

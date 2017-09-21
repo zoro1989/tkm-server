@@ -1,9 +1,9 @@
 package com.ccbjb.common.shiro;
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
+
+import com.ccbjb.common.utils.StringUtils;
+
+import javax.imageio.ImageIO;
+import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -12,10 +12,6 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Arrays;
 import java.util.Random;
-
-import javax.imageio.ImageIO;
-
-import com.ccbjb.common.utils.StringUtils;
 
 public class VerifyCodeUtils{  
   
@@ -86,7 +82,7 @@ public class VerifyCodeUtils{
      * 对比验证码   
      */
     public static boolean verifyCode(String code){
-    	String v = (String)TokenManager.getVal2Session(V_CODE);
+    	String v = (String) TokenManager.getVal2Session(V_CODE);
     	return StringUtils.equals(v, StringUtils.lowerCase(code));
     }
     
