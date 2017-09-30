@@ -16,6 +16,7 @@ public class TPoints implements Serializable {
     private Long parentId;
     private String title;
     private Object detail;
+    private Integer pOrder;
 
     @Transient
     private List<TPoints> items = new ArrayList<TPoints>();
@@ -57,5 +58,14 @@ public class TPoints implements Serializable {
 
     public void setDetail(Object detail) {
         this.detail = detail;
+    }
+
+
+    public Integer getpOrder() {
+        return pOrder;
+    }
+
+    public void setpOrder(Integer pOrder) {
+        this.pOrder = pOrder;
     }
 }

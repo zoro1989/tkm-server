@@ -1,10 +1,12 @@
 package com.ccbjb.service.points.impl;
 
+import com.ccbjb.common.domain.TCuts;
 import com.ccbjb.common.domain.TPoints;
 import com.ccbjb.common.mybatis.Result;
 import com.ccbjb.common.mybatis.ResultGenerator;
 import com.ccbjb.common.utils.LoggerUtils;
 import com.ccbjb.common.utils.StringUtils;
+import com.ccbjb.dao.TCutsDao;
 import com.ccbjb.dao.TPointsDao;
 import com.ccbjb.model.points.TPointsModel;
 import com.ccbjb.service.points.IPointsService;
@@ -13,8 +15,12 @@ import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.sql.rowset.serial.SerialBlob;
+import java.io.File;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -24,6 +30,8 @@ public class PointServiceImpl implements IPointsService {
 
 	@Autowired
 	TPointsDao tPointsDao;
+	@Autowired
+	TCutsDao tCutsDao;
 
 
 	@Transactional
@@ -34,8 +42,11 @@ public class PointServiceImpl implements IPointsService {
 			point.setId(model.getId());
 			point.setTitle(model.getTitle());
 			point.setParentId(model.getParentId());
-			java.sql.Blob blob = new SerialBlob(model.getDetail().getBytes());
-			point.setDetail(blob);
+			point.setpOrder(model.getpOrder());
+			if(StringUtils.isNotBlank(model.getDetail())) {
+				java.sql.Blob blob = new SerialBlob(model.getDetail().getBytes());
+				point.setDetail(blob);
+			}
 			if(StringUtils.isBlank(point.getId())){
 				tPointsDao.save(point);
 			}else{
@@ -76,7 +87,14 @@ public class PointServiceImpl implements IPointsService {
 		model.setParentId(point.getParentId());
 		Object detail = point.getDetail();
 		model.setDetail(StringUtils.isNotBlank(detail)?new String((byte[])detail):"");
+		model.setpOrder(point.getpOrder());
+		model.setParents(tPointsDao.findParentPoints());
+		model.setCuts(tCutsDao.findAllCuts(point.getId()));
 		return ResultGenerator.genSuccessResult(model);
+	}
+
+	public Result selectParentPoints() {
+		return ResultGenerator.genSuccessResult(tPointsDao.findParentPoints());
 	}
 
 	@Transactional
@@ -97,6 +115,30 @@ public class PointServiceImpl implements IPointsService {
 			result = ResultGenerator.genFailResult();
 		}
 		return result;
+	}
+
+	@Transactional
+	public Result uploadImage(HttpServletRequest request, MultipartFile image, Long pointId){
+		String path = request.getSession().getServletContext().getRealPath("upload");
+//        String fileName = image.getOriginalFilename();
+		String fileName = new Date().getTime()+".jpg";
+		File targetFile = new File(path, fileName);
+		if(!targetFile.exists()){
+			targetFile.mkdirs();
+		}
+
+		//保存
+		try {
+			image.transferTo(targetFile);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		String resultPath = request.getContextPath()+"/upload/"+fileName;
+		TCuts tCuts = new TCuts();
+		tCuts.setCutUrl(resultPath);
+		tCuts.setPointId(pointId);
+		tCutsDao.save(tCuts);
+		return ResultGenerator.genSuccessResult(tCuts);
 	}
 	
 }

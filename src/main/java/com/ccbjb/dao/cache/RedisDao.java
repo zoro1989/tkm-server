@@ -1,5 +1,6 @@
 package com.ccbjb.dao.cache;
 
+import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
@@ -18,8 +19,8 @@ public class RedisDao {
 
     private final JedisPool jedisPool;
 
-    public RedisDao(String ip, int port) {
-        jedisPool = new JedisPool(ip, port);
+    public RedisDao(String host, int port, String password) {
+        jedisPool = new JedisPool(new GenericObjectPoolConfig(), host, port, 2000, password);
     }
 
     public String getUserId(String tokenId) {

@@ -1,5 +1,8 @@
 package com.ccbjb.model.points;
 
+import com.ccbjb.common.domain.TCuts;
+import com.ccbjb.common.domain.TPoints;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,10 +15,15 @@ public class TPointsModel implements Serializable {
     private Long id;
     private Long parentId;
     private String title;
-
     private String detail;
 
+    private Integer pOrder;
+
+    private List<TPoints> parents = new ArrayList<TPoints>();
+
     private List<TPointsModel> items = new ArrayList<TPointsModel>();
+
+    private List<TCuts> cuts = new ArrayList<TCuts>();
 
     public Long getId() {
         return id;
@@ -54,5 +62,27 @@ public class TPointsModel implements Serializable {
     public void setDetail(String detail) {
         this.detail = detail;
     }
+    public List<TPoints> getParents() {
+        return parents;
+    }
+    public void setParents(List<TPoints> parents) {
+        this.parents = parents;
+    }
 
+    public Integer getpOrder() {
+        return pOrder;
+    }
+
+    public void setpOrder(Integer pOrder) {
+        this.pOrder = pOrder;
+    }
+
+
+    public List<TCuts> getCuts() {
+        return cuts;
+    }
+
+    public void setCuts(List<TCuts> cuts) {
+        this.cuts = cuts;
+    }
 }

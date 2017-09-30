@@ -24,4 +24,7 @@ public class TPointsDaoImpl extends AbstractDao<TPoints> implements TPointsDao {
     public TPoints findPointById(Long id) {
         return tPointsMapper.findPointById(id);
     }
+    public List<TPoints> findParentPoints(){
+        return tPointsMapper.findParentPoints();
+    }
 }

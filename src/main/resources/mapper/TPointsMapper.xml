@@ -6,16 +6,15 @@
     <result column="parent_id" property="parentId" jdbcType="BIGINT" />
     <result column="title" property="title" jdbcType="VARCHAR" />
     <result column="detail" property="detail" jdbcType="BLOB" />
+    <result column="p_order" property="pOrder" jdbcType="INTEGER" />
   </resultMap>
   <resultMap id="findAllPointsResultMap" type="TPoints" extends="BaseResultMap">
     <collection property="items" javaType="com.ccbjb.common.domain.TPoints">
       <id column="iid" property="id" jdbcType="BIGINT" />
       <result column="ititle" property="title" jdbcType="VARCHAR" />
+      <result column="iorder" property="pOrder" jdbcType="INTEGER" />
     </collection>
   </resultMap>
-  <sql id="Base_Column_List" >
-    id, parent_id, title,detail
-  </sql>
   <sql id="where_all">
     <where>
       <if test="findContent != null and findContent !='' " >
@@ -27,7 +26,7 @@
   </sql>
   <select id="findAllPoints" resultMap="findAllPointsResultMap" >
     select
-      p.id,p.title,i.id iid,i.title ititle
+      p.id,p.title,p.p_order,i.id iid,i.title ititle,i.p_order iorder
     from t_points p
     left join t_points i
               on p.id = i.parent_id
@@ -39,10 +38,16 @@
         )
       </if>
     </where>
+    order by p.p_order, i.p_order
   </select>
   <select id="findPointById" resultMap="BaseResultMap" >
     select
-    <include refid="Base_Column_List" />
-    from t_points where id = #{id}
+    p.id, p.parent_id, p.title,p.detail,p.p_order
+    from t_points p where p.id = #{id}
+  </select>
+  <select id="findParentPoints" resultMap="BaseResultMap" >
+    select
+    p.id,p.title,p.p_order
+    from t_points p where p.parent_id IS NULL order by p.p_order
   </select>
 </mapper>
