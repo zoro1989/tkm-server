@@ -27,4 +27,6 @@ public interface IPointsService {
 	Result selectParentPoints();
 
 	Result uploadImage(HttpServletRequest request, MultipartFile image, Long pointId);
+
+	Result deleteImageById(Long id);
 }

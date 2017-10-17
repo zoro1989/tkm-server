@@ -85,8 +85,9 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils{
 	 */
 	public static int indexOf(String baseStr,String[] strings){
 		
-		if(null == baseStr || baseStr.length() == 0 || null == strings)
+		if(null == baseStr || baseStr.length() == 0 || null == strings) {
 			return 0;
+		}
 		
 		int i = 0;
 		for (String string : strings) {
@@ -107,7 +108,7 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils{
 	 * @return
 	 */
     public static String getBASE64(String str,boolean...bf) { 
-       if (StringUtils.isBlank(str)) return null;
+       if (StringUtils.isBlank(str)) {return null;}
        String base64 = new sun.misc.BASE64Encoder().encode(str.getBytes()) ;
        //去掉 '='
        if(isBlank(bf) && bf[0]){
@@ -118,7 +119,7 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils{
 
     /** 将 BASE64 编码的字符串 s 进行解码**/
     public static String getStrByBASE64(String s) { 
-       if (isBlank(s)) return ""; 
+       if (isBlank(s)) {return ""; }
        BASE64Decoder decoder = new BASE64Decoder(); 
        try { 
           byte[] b = decoder.decodeBuffer(s); 
@@ -256,8 +257,9 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils{
     		String bb = txt.substring(i, i + 1); 
 
     		boolean cc = Pattern.matches("[\u4E00-\u9FA5]", bb);
-    		if(cc)
-    		return cc ;
+    		if(cc) {
+				return cc;
+			}
     	}
 		return false;
     }
@@ -268,12 +270,12 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils{
      */
     public static String removeHtml(String news) {
       String s = news.replaceAll("amp;", "").replaceAll("<","<").replaceAll(">", ">");
-      
-      Pattern pattern = Pattern.compile("<(span)?\\sstyle.*?style>|(span)?\\sstyle=.*?>", Pattern.DOTALL);
+      String patternRule = "<(span)?\\sstyle.*?style>|(span)?\\sstyle=.*?>";
+      Pattern pattern = Pattern.compile(patternRule, Pattern.DOTALL);
       Matcher matcher = pattern.matcher(s);
       String str = matcher.replaceAll("");
-      
-      Pattern pattern2 = Pattern.compile("(<[^>]+>)",Pattern.DOTALL);
+      String pattern2Rule = "(<[^>]+>)";
+      Pattern pattern2 = Pattern.compile(pattern2Rule,Pattern.DOTALL);
       Matcher matcher2 = pattern2.matcher(str);
       String strhttp = matcher2.replaceAll(" ");
       
@@ -293,8 +295,8 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils{
       Matcher matchhttp = p1.matcher(strhttp);
       String strnew = matchhttp.replaceAll("").replaceAll("(if[\\s]*\\(|else|elseif[\\s]*\\().*?;", " ");
       
-      
-      Pattern patterncomma = Pattern.compile("(&[^;]+;)",Pattern.DOTALL);
+      String patterncommaRule = "(&[^;]+;)";
+      Pattern patterncomma = Pattern.compile(patterncommaRule,Pattern.DOTALL);
       Matcher matchercomma = patterncomma.matcher(strnew);
       String strout = matchercomma.replaceAll(" ");
       String answer = strout.replaceAll("[\\pP‘’“”]", " ")

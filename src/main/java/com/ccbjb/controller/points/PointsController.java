@@ -53,7 +53,6 @@ public class PointsController extends BaseController {
     }
     /**
      * 删除角色，根据ID，但是删除角色的时候，需要查询是否有赋予给用户，如果有用户在使用，那么就不能删除。
-     * @param ids
      * @return
      */
     @GetMapping(value="selectPointById")
@@ -63,7 +62,6 @@ public class PointsController extends BaseController {
 
     /**
      * 删除角色，根据ID，但是删除角色的时候，需要查询是否有赋予给用户，如果有用户在使用，那么就不能删除。
-     * @param ids
      * @return
      */
     @GetMapping(value="selectParentPoints")
@@ -75,5 +73,10 @@ public class PointsController extends BaseController {
     public Result uploadImage(HttpServletRequest request, MultipartFile image, Long pointId) {
 
         return pointsService.uploadImage(request,image,pointId);
+    }
+
+    @PostMapping(value = "deleteImageById")
+    public Result deleteImageById(Long id) {
+        return pointsService.deleteImageById(id);
     }
 }

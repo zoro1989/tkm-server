@@ -19,30 +19,37 @@ public class SysRolePermissionDaoImpl extends AbstractDao<SysRolePermission> imp
     @Resource
     private SysRolePermissionMapper sysRolePermissionMapper;
 
+    @Override
     public List<SysRolePermission> findRolePermissionByPid(Long id) {
         return sysRolePermissionMapper.findRolePermissionByPid(id);
     }
 
+    @Override
     public List<SysRolePermission> findRolePermissionByRid(Long id) {
         return sysRolePermissionMapper.findRolePermissionByRid(id);
     }
 
+    @Override
     public List<SysRolePermission> find(SysRolePermission entity) {
         return sysRolePermissionMapper.find(entity);
     }
 
+    @Override
     public int deleteByPid(Long id) {
         return sysRolePermissionMapper.deleteByPid(id);
     }
 
+    @Override
     public int deleteByRid(Long id) {
         return sysRolePermissionMapper.deleteByRid(id);
     }
 
+    @Override
     public int deleteByEntity(SysRolePermission entity) {
         return sysRolePermissionMapper.delete(entity);
     }
 
+    @Override
     public int deleteByRids(Map<String, Object> resultMap) {
         return sysRolePermissionMapper.deleteByRids(resultMap);
     }

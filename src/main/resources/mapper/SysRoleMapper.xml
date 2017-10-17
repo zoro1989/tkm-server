@@ -91,5 +91,4 @@
     left join sys_permission up on up.id = urp.pid
   </select>
   <!-- Mybatis 一对多 Demo  end -->
-
 </mapper>

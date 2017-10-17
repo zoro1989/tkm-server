@@ -32,35 +32,42 @@ public class RoleServiceImpl implements IRoleService {
 	private SysRolePermissionDao rolePermissionDao;
 
 	@Transactional
+	@Override
 	public void deleteByPrimaryKey(Long id) {
 		roleDao.deleteById(id);
 	}
 
 	@Transactional
+	@Override
 	public void insert(SysRole record) {
 		roleDao.save(record);
 	}
 
 	@Transactional
+	@Override
 	public void insertSelective(SysRole record) {
 		roleDao.save(record);
 	}
 
+	@Override
 	public SysRole selectByPrimaryKey(Long id) {
 		return roleDao.findById(id);
 	}
 
 	@Transactional
+	@Override
 	public void updateByPrimaryKey(SysRole record) {
 		roleDao.update(record);
 	}
 
 	@Transactional
+	@Override
 	public void updateByPrimaryKeySelective(SysRole record) {
 		roleDao.update(record);
 	}
 
 	@Transactional
+	@Override
 	public Result findPage(Map<String, String> resultMap,
                            Integer pageNo, Integer pageSize) {
 		PageHelper.startPage(pageNo, pageSize);
@@ -70,6 +77,7 @@ public class RoleServiceImpl implements IRoleService {
 	}
 
 	@Transactional
+	@Override
 	public Result findRoleAndPermissionPage(
 			Map<String, String> resultMap, Integer pageNo, Integer pageSize) {
 		PageHelper.startPage(pageNo, pageSize);
@@ -79,6 +87,7 @@ public class RoleServiceImpl implements IRoleService {
 	}
 
 	@Transactional
+	@Override
 	public Result deleteRoleById(Long[] ids) {
 		Result result = null;
 		try {
@@ -103,10 +112,12 @@ public class RoleServiceImpl implements IRoleService {
 		return result;
 	}
 
+	@Override
 	public Set<String> findRoleByUserId(Long userId) {
 		return roleDao.findRoleByUserId(userId);
 	}
 
+	@Override
 	public List<SysRole> findNowAllPermission() {
 		Map<String,Object> map = new HashMap<String,Object>();
 		map.put("userId", TokenManager.getUserId());
@@ -116,6 +127,7 @@ public class RoleServiceImpl implements IRoleService {
 	/**
 	 * 每20分钟执行一次
 	 */
+	@Override
 	public void initData() {
 		roleDao.initData();
 	}

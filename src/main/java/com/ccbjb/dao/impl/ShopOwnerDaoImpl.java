@@ -18,10 +18,12 @@ public class ShopOwnerDaoImpl extends AbstractDao<ShopOwner> implements ShopOwne
     @Resource
     private ShopOwnerMapper shopOwnerMapper;
 
+    @Override
     public ShopOwner login(Map<String, Object> map) {
         return shopOwnerMapper.login(map);
     }
 
+    @Override
     public ShopOwner findUserByMobile(String mobile) {
         return shopOwnerMapper.findUserByMobile(mobile);
     }

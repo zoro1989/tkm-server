@@ -19,14 +19,17 @@ public class SysUserRoleDaoImpl extends AbstractDao<SysUserRole> implements SysU
     @Resource
     private SysUserRoleMapper sysUserRoleMapper;
 
+    @Override
     public int deleteByUserId(Long id) {
         return sysUserRoleMapper.deleteByUserId(id);
     }
 
+    @Override
     public int deleteRoleByUserIds(Map<String, Object> resultMap) {
         return sysUserRoleMapper.deleteRoleByUserIds(resultMap);
     }
 
+    @Override
     public List<Long> findUserIdByRoleId(Long id) {
         return sysUserRoleMapper.findUserIdByRoleId(id);
     }

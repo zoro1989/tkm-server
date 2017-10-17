@@ -35,6 +35,7 @@ public class PointServiceImpl implements IPointsService {
 
 
 	@Transactional
+	@Override
 	public Result insertPoint(TPointsModel model) {
 		Result result = null;
 		try {
@@ -61,16 +62,19 @@ public class PointServiceImpl implements IPointsService {
 	}
 
 	@Transactional
+	@Override
 	public void deletePointById(Long id) {
 		tPointsDao.deleteById(id);
 	}
 
 	@Transactional
+	@Override
 	public void updatePoint(TPoints point) {
 		tPointsDao.update(point);
 	}
 
 	@Transactional
+	@Override
 	public Result findPage(Map<String, String> resultMap,
                            Integer pageNo, Integer pageSize) {
 		PageHelper.startPage(pageNo, pageSize);
@@ -79,6 +83,7 @@ public class PointServiceImpl implements IPointsService {
 		return ResultGenerator.genSuccessResult(pageInfo);
 	}
 
+	@Override
 	public Result selectPoint(Long id) {
 		TPoints point = tPointsDao.findPointById(id);
 		TPointsModel model = new TPointsModel();
@@ -93,11 +98,13 @@ public class PointServiceImpl implements IPointsService {
 		return ResultGenerator.genSuccessResult(model);
 	}
 
+	@Override
 	public Result selectParentPoints() {
 		return ResultGenerator.genSuccessResult(tPointsDao.findParentPoints());
 	}
 
 	@Transactional
+	@Override
 	public Result deletePointByIds(Long[] ids) {
 		Result result = null;
 		try {
@@ -118,10 +125,11 @@ public class PointServiceImpl implements IPointsService {
 	}
 
 	@Transactional
+	@Override
 	public Result uploadImage(HttpServletRequest request, MultipartFile image, Long pointId){
 		String path = request.getSession().getServletContext().getRealPath("upload");
 //        String fileName = image.getOriginalFilename();
-		String fileName = new Date().getTime()+".jpg";
+		String fileName = System.currentTimeMillis()+".jpg";
 		File targetFile = new File(path, fileName);
 		if(!targetFile.exists()){
 			targetFile.mkdirs();
@@ -139,6 +147,13 @@ public class PointServiceImpl implements IPointsService {
 		tCuts.setPointId(pointId);
 		tCutsDao.save(tCuts);
 		return ResultGenerator.genSuccessResult(tCuts);
+	}
+
+	@Transactional
+	@Override
+	public Result deleteImageById(Long id) {
+		tCutsDao.deleteById(id);
+		return ResultGenerator.genSuccessResult();
 	}
 	
 }

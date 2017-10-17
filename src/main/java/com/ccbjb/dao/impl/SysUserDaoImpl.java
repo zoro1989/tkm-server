@@ -20,22 +20,27 @@ public class SysUserDaoImpl extends AbstractDao<SysUser> implements SysUserDao {
     @Resource
     private SysUserMapper sysUserMapper;
 
+    @Override
     public List<SysUser> findUserAndRole(Map<String, String> map) {
         return sysUserMapper.findUserAndRole(map);
     }
 
+    @Override
     public List<SysUser> findAllUsers(Map<String, String> map) {
         return sysUserMapper.findAllUsers(map);
     }
 
+    @Override
     public SysUser login(Map<String, Object> map) {
         return sysUserMapper.login(map);
     }
 
+    @Override
     public SysUser findUserByEmail(String email) {
         return sysUserMapper.findUserByEmail(email);
     }
 
+    @Override
     public List<SysRoleModel> selectRoleByUserId(Long id) {
         return sysUserMapper.selectRoleByUserId(id);
     }

@@ -1,11 +1,9 @@
 package com.ccbjb.common.mybatis;
 
 
-import org.apache.ibatis.exceptions.TooManyResultsException;
-import org.springframework.beans.factory.annotation.Autowired;
-import tk.mybatis.mapper.entity.Condition;
 
-import java.lang.reflect.Field;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import java.lang.reflect.ParameterizedType;
 import java.util.List;
 
@@ -24,26 +22,32 @@ public abstract class AbstractDao<T> implements BaseDao<T> {
         modelClass = (Class<T>) pt.getActualTypeArguments()[0];
     }
 
+    @Override
     public void save(T model) {
         mapper.insertSelective(model);
     }
 
+    @Override
     public void save(List<T> models) {
         mapper.insertList(models);
     }
 
+    @Override
     public void deleteById(Long id) {
         mapper.deleteByPrimaryKey(id);
     }
 
+    @Override
     public void update(T model) {
         mapper.updateByPrimaryKeySelective(model);
     }
 
+    @Override
     public T findById(Long id) {
         return mapper.selectByPrimaryKey(id);
     }
 
+    @Override
     public List<T> findAll() {
         return mapper.selectAll();
     }

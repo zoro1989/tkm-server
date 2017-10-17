@@ -18,6 +18,7 @@ public class TCutsDaoImpl extends AbstractDao<TCuts> implements TCutsDao {
     @Resource
     TCutsMapper tCutsMapper;
 
+    @Override
     public List<TCuts> findAllCuts(Long pointId) {
         return tCutsMapper.findAllCuts(pointId);
     }

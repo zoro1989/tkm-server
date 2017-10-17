@@ -21,7 +21,7 @@ public class MobileLoginServiceImpl implements MobileLoginService{
     ShopOwnerDao iShopOwnerDao;
     @Autowired
     private RedisDao redisDao;
-
+    @Override
     public ShopOwner login(ShopOwner user) {
         Map<String,Object> map = new HashMap<String, Object>();
         String mobile = user.getMobile();

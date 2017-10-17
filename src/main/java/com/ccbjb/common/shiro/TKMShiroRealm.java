@@ -67,6 +67,7 @@ public class TKMShiroRealm extends AuthorizingRealm {
      * @param principals
      * @return
      */
+	@Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
 
 		//从 principals获取主身份信息
@@ -97,6 +98,7 @@ public class TKMShiroRealm extends AuthorizingRealm {
 	/**
 	 * 指定principalCollection 清除
 	 */
+	@Override
 	public void clearCachedAuthorizationInfo(PrincipalCollection principalCollection) {
 		SimplePrincipalCollection principals = new SimplePrincipalCollection(
 				principalCollection, getName());

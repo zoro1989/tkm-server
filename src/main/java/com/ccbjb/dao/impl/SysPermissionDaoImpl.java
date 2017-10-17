@@ -21,14 +21,17 @@ public class SysPermissionDaoImpl extends AbstractDao<SysPermission> implements 
     @Resource
     private SysPermissionMapper sysPermissionMapper;
 
+    @Override
     public List<SysPermission> findAllPermissions(Map<String, String> map) {
         return sysPermissionMapper.findAllPermissions(map);
     }
 
+    @Override
     public List<SysPermissionModel> selectPermissionById(Long id) {
         return sysPermissionMapper.selectPermissionById(id);
     }
 
+    @Override
     public Set<String> findPermissionByUserId(Long id) {
         return sysPermissionMapper.findPermissionByUserId(id);
     }

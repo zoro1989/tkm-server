@@ -36,17 +36,20 @@ public class PermissionServiceImpl implements IPermissionService {
 	SysUserRoleDao userRoleDao;
 
 	@Transactional
+	@Override
 	public void deleteByPrimaryKey(Long id) {
 		permissionDao.deleteById(id);
 	}
 
 	@Transactional
+	@Override
 	public SysPermission insert(SysPermission record) {
 		permissionDao.save(record);
 		return record;
 	}
 
 	@Transactional
+	@Override
 	public SysPermission insertSelective(SysPermission record) {
 		//添加权限
 		permissionDao.save(record);
@@ -55,21 +58,25 @@ public class PermissionServiceImpl implements IPermissionService {
 		return record;
 	}
 
+	@Override
 	public SysPermission selectByPrimaryKey(Long id) {
 		return permissionDao.findById(id);
 	}
 
 	@Transactional
+	@Override
 	public void updateByPrimaryKey(SysPermission record) {
 		permissionDao.update(record);
 	}
 
 	@Transactional
+	@Override
 	public void updateByPrimaryKeySelective(SysPermission record) {
 		permissionDao.update(record);
 	}
 
 	@Transactional
+	@Override
 	public Result deletePermissionById(Long[] ids) {
 		Result result = null;
 		try {
@@ -102,6 +109,7 @@ public class PermissionServiceImpl implements IPermissionService {
 
 	@SuppressWarnings("unchecked")
 	@Transactional
+	@Override
 	public Result findPage(Map<String,String> map, Integer pageNo,
                            Integer pageSize) {
 		PageHelper.startPage(pageNo, pageSize);
@@ -111,11 +119,13 @@ public class PermissionServiceImpl implements IPermissionService {
 		return ResultGenerator.genSuccessResult(pageInfo);
 	}
 
+	@Override
 	public List<SysPermissionModel> selectPermissionById(Long id) {
 		return permissionDao.selectPermissionById(id);
 	}
 
 	@Transactional
+	@Override
 	public Result addPermission2Role(Long roleId, Long[] ids) {
 		//先删除原有的。
 		rolePermissionDao.deleteByRid(roleId);
@@ -154,6 +164,7 @@ public class PermissionServiceImpl implements IPermissionService {
 	}
 
 	@Transactional
+	@Override
 	public Result deleteByRids(Long[] roleIds) {
 		Map<String,Object> resultMap = new HashMap<String, Object>();
 		Result result = null;
@@ -176,6 +187,7 @@ public class PermissionServiceImpl implements IPermissionService {
 		return result;
 	}
 
+	@Override
 	public Set<String> findPermissionByUserId(Long userId) {
 		return permissionDao.findPermissionByUserId(userId);
 	}

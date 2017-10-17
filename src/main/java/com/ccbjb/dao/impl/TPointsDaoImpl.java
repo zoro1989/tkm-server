@@ -18,12 +18,18 @@ import java.util.Map;
 public class TPointsDaoImpl extends AbstractDao<TPoints> implements TPointsDao {
     @Resource
     TPointsMapper tPointsMapper;
+
+    @Override
     public List<TPoints> findAllPoints(Map<String, String> map){
         return tPointsMapper.findAllPoints(map);
     }
+
+    @Override
     public TPoints findPointById(Long id) {
         return tPointsMapper.findPointById(id);
     }
+
+    @Override
     public List<TPoints> findParentPoints(){
         return tPointsMapper.findParentPoints();
     }

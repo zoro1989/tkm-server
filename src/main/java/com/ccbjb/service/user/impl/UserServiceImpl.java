@@ -38,11 +38,13 @@ public class UserServiceImpl implements IUserService {
     @Autowired
     SysUserRoleDao sysUserRoleDao;
 
+    @Override
     public void deleteByPrimaryKey(Long id) {
         sysUserDao.deleteById(id);
     }
 
     @Transactional
+    @Override
     public SysUser insert(SysUser entity) {
 
         String salt = new SecureRandomNumberGenerator().nextBytes().toHex();
@@ -58,23 +60,28 @@ public class UserServiceImpl implements IUserService {
         return entity;
     }
     @Transactional
+    @Override
     public SysUser insertSelective(SysUser entity) {
         sysUserDao.save(entity);
         return entity;
     }
 
+    @Override
     public SysUser selectByPrimaryKey(Long id) {
         return sysUserDao.findById(id);
     }
     @Transactional
+    @Override
     public void updateByPrimaryKey(SysUser entity) {
         sysUserDao.update(entity);
     }
     @Transactional
+    @Override
     public void updateByPrimaryKeySelective(SysUser entity) {
         sysUserDao.update(entity);
     }
 
+    @Override
     public SysUser login(SysUser user) {
         Map<String,Object> map = new HashMap<String, Object>();
         map.put("email", user.getEmail());
@@ -83,12 +90,14 @@ public class UserServiceImpl implements IUserService {
         return sysUserDao.login(map);
     }
 
+    @Override
     public SysUser findUserByEmail(String email) {
         return sysUserDao.findUserByEmail(email);
     }
 
     @SuppressWarnings("unchecked")
     @Transactional
+    @Override
     public Result findByPage(Map<String, String> resultMap,
                              Integer pageNo, Integer pageSize) {
         PageHelper.startPage(pageNo, pageSize);
@@ -99,6 +108,7 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Transactional
+    @Override
     public Result deleteUserById(Long[] ids) {
         Result result = null;
         try {
@@ -117,6 +127,7 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Transactional
+    @Override
     public Result updateForbidUserById(Long id, Long status) {
         Result result = null;
         try {
@@ -137,6 +148,7 @@ public class UserServiceImpl implements IUserService {
 
     @SuppressWarnings("unchecked")
     @Transactional
+    @Override
     public Result findUserAndRole(Map<String, String> map, Integer pageNo, Integer pageSize) {
         PageHelper.startPage(pageNo, pageSize);
         List<SysUser> list = sysUserDao.findUserAndRole(map);
@@ -145,11 +157,13 @@ public class UserServiceImpl implements IUserService {
         return ResultGenerator.genSuccessResult(pageInfo);
     }
 
+    @Override
     public List<SysRoleModel> selectRoleByUserId(Long id) {
         return sysUserDao.selectRoleByUserId(id);
     }
 
     @Transactional
+    @Override
     public Result addRole2User(Long userId, Long[] ids) {
         Result result = null;
         int count = 0;
@@ -176,6 +190,7 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Transactional
+    @Override
     public Result deleteRoleByUserIds(Long[] userIds) {
 
         Map<String,Object> resultMap = new HashMap<String, Object>();

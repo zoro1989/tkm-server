@@ -22,22 +22,27 @@ public class SysRoleDaoImpl extends AbstractDao<SysRole> implements SysRoleDao {
     private SysRoleMapper sysRoleMapper;
 
     @Cacheable("findAllRoles")
+    @Override
     public List<SysRole> findAllRoles(Map<String, String> map) {
         return sysRoleMapper.findAllRoles(map);
     }
 
+    @Override
     public List<SysRole> findRoleAndPermission() {
         return sysRoleMapper.findRoleAndPermission();
     }
 
+    @Override
     public Set<String> findRoleByUserId(Long id) {
         return sysRoleMapper.findRoleByUserId(id);
     }
 
+    @Override
     public List<SysRole> findNowAllPermission(Map<String, Object> map) {
         return sysRoleMapper.findNowAllPermission(map);
     }
 
+    @Override
     public void initData() {
         sysRoleMapper.initData();
     }
