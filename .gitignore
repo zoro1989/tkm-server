@@ -3,11 +3,7 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 .idea/
-.project
-.settings
 classes/
 out/
 target/
-tkm-server.iml
 *.mp4
-.classpath
