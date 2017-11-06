@@ -20,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import javax.sql.rowset.serial.SerialBlob;
 import java.io.File;
+import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -44,8 +45,11 @@ public class PointServiceImpl implements IPointsService {
 			point.setTitle(model.getTitle());
 			point.setParentId(model.getParentId());
 			point.setpOrder(model.getpOrder());
+			if(StringUtils.isNotBlank(model.getType())) {
+				point.setType(model.getType());
+			}
 			if(StringUtils.isNotBlank(model.getDetail())) {
-				java.sql.Blob blob = new SerialBlob(model.getDetail().getBytes());
+				java.sql.Blob blob = new SerialBlob(model.getDetail().getBytes("utf-8"));
 				point.setDetail(blob);
 			}
 			if(StringUtils.isBlank(point.getId())){
@@ -83,24 +87,28 @@ public class PointServiceImpl implements IPointsService {
 		return ResultGenerator.genSuccessResult(pageInfo);
 	}
 
+	@Transactional
 	@Override
-	public Result selectPoint(Long id) {
-		TPoints point = tPointsDao.findPointById(id);
+	public Result selectPoint(Long id,int type) {
+		TPoints point = tPointsDao.findPointById(id,type);
 		TPointsModel model = new TPointsModel();
 		model.setId(point.getId());
 		model.setTitle(point.getTitle());
 		model.setParentId(point.getParentId());
-		Object detail = point.getDetail();
-		model.setDetail(StringUtils.isNotBlank(detail)?new String((byte[])detail):"");
+		try {
+			Object detail = point.getDetail();
+			model.setDetail(StringUtils.isNotBlank(detail)?new String((byte[])detail,"utf-8"):"");
+		}catch (Exception e) {
+		}
 		model.setpOrder(point.getpOrder());
-		model.setParents(tPointsDao.findParentPoints());
+		model.setParents(tPointsDao.findParentPoints(type));
 		model.setCuts(tCutsDao.findAllCuts(point.getId()));
 		return ResultGenerator.genSuccessResult(model);
 	}
 
 	@Override
-	public Result selectParentPoints() {
-		return ResultGenerator.genSuccessResult(tPointsDao.findParentPoints());
+	public Result selectParentPoints(int type) {
+		return ResultGenerator.genSuccessResult(tPointsDao.findParentPoints(type));
 	}
 
 	@Transactional
@@ -131,8 +139,15 @@ public class PointServiceImpl implements IPointsService {
 //        String fileName = image.getOriginalFilename();
 		String fileName = System.currentTimeMillis()+".jpg";
 		File targetFile = new File(path, fileName);
+		File fileParent = targetFile.getParentFile();
+		if(!fileParent.exists()) {
+			fileParent.mkdirs();
+		}
 		if(!targetFile.exists()){
-			targetFile.mkdirs();
+			try {
+				targetFile.createNewFile();
+			}catch (IOException e) {
+			}
 		}
 
 		//保存

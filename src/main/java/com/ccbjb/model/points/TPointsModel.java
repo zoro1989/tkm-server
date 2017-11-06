@@ -16,6 +16,7 @@ public class TPointsModel implements Serializable {
     private Long parentId;
     private String title;
     private String detail;
+    private Integer type;
 
     private Integer pOrder;
 
@@ -61,6 +62,14 @@ public class TPointsModel implements Serializable {
 
     public void setDetail(String detail) {
         this.detail = detail;
+    }
+
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
     }
     public List<TPoints> getParents() {
         return parents;

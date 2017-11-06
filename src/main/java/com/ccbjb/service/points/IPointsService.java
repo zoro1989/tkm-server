@@ -17,14 +17,14 @@ public interface IPointsService {
 
 	void updatePoint(TPoints point);
 
-	Result selectPoint(Long id);
+	Result selectPoint(Long id,int type);
 
 	Result findPage(Map<String, String> resultMap, Integer pageNo,
                     Integer pageSize);
 
 	Result deletePointByIds(Long[] ids);
 
-	Result selectParentPoints();
+	Result selectParentPoints(int type);
 
 	Result uploadImage(HttpServletRequest request, MultipartFile image, Long pointId);
 

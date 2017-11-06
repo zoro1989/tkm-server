@@ -35,6 +35,7 @@
                 /api/** = anon
                 /points/** = anon
                 /index.html = anon
+                /favicon.ico = anon
                 <!-- 请求 logout.action地址，shiro去清除session-->
                 /user/logout.tkm = logout
                 /user/submitLogin.tkm = anon

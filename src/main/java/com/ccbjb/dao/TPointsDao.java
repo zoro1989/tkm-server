@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public interface TPointsDao extends BaseDao<TPoints> {
     List<TPoints> findAllPoints(Map<String, String> map);
-    TPoints findPointById(Long id);
-    List<TPoints> findParentPoints();
+    TPoints findPointById(Long id,int type);
+    List<TPoints> findParentPoints(int type);
 
 }

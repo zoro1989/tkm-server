@@ -17,6 +17,7 @@ public class TPoints implements Serializable {
     private String title;
     private Object detail;
     private Integer pOrder;
+    private Integer type;
 
     @Transient
     private List<TPoints> items = new ArrayList<TPoints>();
@@ -67,5 +68,14 @@ public class TPoints implements Serializable {
 
     public void setpOrder(Integer pOrder) {
         this.pOrder = pOrder;
+    }
+
+
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
     }
 }

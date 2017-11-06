@@ -27,9 +27,10 @@ public class PointsController extends BaseController {
     IPointsService pointsService;
 
     @RequestMapping("list")
-    public Result list(Integer pageNo, String findContent) {
+    public Result list(Integer pageNo, String findContent, String type) {
         Map<String,String> map = new HashMap<String,String>();
         map.put("findContent", findContent);
+        map.put("type", type);
         return pointsService.findPage(map,pageNo,pageSize);
     }
 
@@ -56,8 +57,8 @@ public class PointsController extends BaseController {
      * @return
      */
     @GetMapping(value="selectPointById")
-    public Result selectPointById(Long id){
-        return pointsService.selectPoint(id);
+    public Result selectPointById(Long id,int type){
+        return pointsService.selectPoint(id,type);
     }
 
     /**
@@ -65,8 +66,8 @@ public class PointsController extends BaseController {
      * @return
      */
     @GetMapping(value="selectParentPoints")
-    public Result selectParentPoints(){
-        return pointsService.selectParentPoints();
+    public Result selectParentPoints(int type){
+        return pointsService.selectParentPoints(type);
     }
 
     @PostMapping(value = "uploadImage")

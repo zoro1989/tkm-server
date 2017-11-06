@@ -8,6 +8,6 @@ import java.util.Map;
 
 public interface TPointsMapper extends TKMMapper<TPoints> {
     List<TPoints> findAllPoints(Map<String, String> map);
-    TPoints findPointById(Long id);
-    List<TPoints> findParentPoints();
+    TPoints findPointById(Map<String, Object> paramMap);
+    List<TPoints> findParentPoints(int type);
 }

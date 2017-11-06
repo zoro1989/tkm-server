@@ -7,6 +7,7 @@ import com.ccbjb.dao.TPointsDao;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -25,12 +26,15 @@ public class TPointsDaoImpl extends AbstractDao<TPoints> implements TPointsDao {
     }
 
     @Override
-    public TPoints findPointById(Long id) {
-        return tPointsMapper.findPointById(id);
+    public TPoints findPointById(Long id,int type) {
+        Map<String, Object> paramMap = new HashMap<>();
+        paramMap.put("id", id);
+        paramMap.put("type", type);
+        return tPointsMapper.findPointById(paramMap);
     }
 
     @Override
-    public List<TPoints> findParentPoints(){
-        return tPointsMapper.findParentPoints();
+    public List<TPoints> findParentPoints(int type){
+        return tPointsMapper.findParentPoints(type);
     }
 }
